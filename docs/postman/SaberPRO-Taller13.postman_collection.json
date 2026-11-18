@@ -1,0 +1,90 @@
+{
+  "info": {
+    "name": "SaberPRO - Taller 13 (DDD + Hexagonal + Docker)",
+    "description": "Pruebas integradas del ecosistema contenerizado. Ejecutar en orden.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8083" },
+    { "key": "lifecycleUrl", "value": "http://localhost:8084" },
+    { "key": "validationUrl", "value": "http://localhost:8082" },
+    { "key": "preguntaId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "01 - GET listar preguntas (200 OK)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/preguntas" }
+    },
+    {
+      "name": "02 - POST crear pregunta valida (201 Created)",
+      "event": [{
+        "listen": "test",
+        "script": { "type": "text/javascript", "exec": [
+          "pm.test('Status 201', () => pm.response.to.have.status(201));",
+          "pm.collectionVariables.set('preguntaId', pm.response.json().id);"
+        ]}
+      }],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/preguntas",
+        "body": { "mode": "raw", "raw": "{\n  \"enunciado\": \"Cual es la complejidad temporal de la busqueda binaria en un arreglo ordenado?\",\n  \"justificacion\": \"En cada iteracion se descarta la mitad del espacio de busqueda, por eso es logaritmica.\",\n  \"opciones\": [\n    { \"texto\": \"O(n)\", \"correcta\": false },\n    { \"texto\": \"O(log n)\", \"correcta\": true },\n    { \"texto\": \"O(n log n)\", \"correcta\": false },\n    { \"texto\": \"O(1)\", \"correcta\": false }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "03 - POST justificacion corta (400 Bad Request)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/preguntas",
+        "body": { "mode": "raw", "raw": "{\n  \"enunciado\": \"Que es un agregado en DDD?\",\n  \"justificacion\": \"corta\",\n  \"opciones\": [\n    { \"texto\": \"A\", \"correcta\": true },\n    { \"texto\": \"B\", \"correcta\": false },\n    { \"texto\": \"C\", \"correcta\": false },\n    { \"texto\": \"D\", \"correcta\": false }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "04 - POST opciones repetidas (400 por validation-service)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/preguntas",
+        "body": { "mode": "raw", "raw": "{\n  \"enunciado\": \"Que patron desacopla el dominio de la infraestructura?\",\n  \"justificacion\": \"Los puertos y adaptadores aislan el nucleo de negocio.\",\n  \"opciones\": [\n    { \"texto\": \"Hexagonal\", \"correcta\": true },\n    { \"texto\": \"Hexagonal\", \"correcta\": false },\n    { \"texto\": \"MVC\", \"correcta\": false },\n    { \"texto\": \"Capas\", \"correcta\": false }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "05 - POST pregunta con 3 opciones (201, queda en BORRADOR)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/preguntas",
+        "body": { "mode": "raw", "raw": "{\n  \"enunciado\": \"Cual comando levanta todo el ecosistema con Docker Compose?\",\n  \"justificacion\": \"El flag --build reconstruye las imagenes antes de iniciar.\",\n  \"opciones\": [\n    { \"texto\": \"docker compose up -d --build\", \"correcta\": true },\n    { \"texto\": \"docker run\", \"correcta\": false },\n    { \"texto\": \"docker ps\", \"correcta\": false }\n  ]\n}" }
+      }
+    },
+    {
+      "name": "06 - POST enviar a revision (202 Accepted -> RabbitMQ)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/preguntas/{{preguntaId}}/enviar-revision" }
+    },
+    {
+      "name": "07 - POST enviar a revision pregunta de 3 opciones (400)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/preguntas/2/enviar-revision" }
+    },
+    {
+      "name": "08 - GET pregunta por id (estado PENDIENTE_REVISION)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/preguntas/{{preguntaId}}" }
+    },
+    {
+      "name": "09 - GET eventos consumidos por lifecycle-service",
+      "request": { "method": "GET", "url": "{{lifecycleUrl}}/api/ciclo-vida/revisiones" }
+    },
+    {
+      "name": "10 - POST aprobar pregunta (200)",
+      "request": { "method": "POST", "url": "{{baseUrl}}/api/preguntas/{{preguntaId}}/aprobar" }
+    },
+    {
+      "name": "11 - GET pregunta inexistente (404)",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/preguntas/999" }
+    },
+    {
+      "name": "12 - GET estado validation-service",
+      "request": { "method": "GET", "url": "{{validationUrl}}/api/validaciones/estado" }
+    }
+  ]
+}
