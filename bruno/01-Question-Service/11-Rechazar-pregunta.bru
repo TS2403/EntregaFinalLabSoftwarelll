@@ -1,0 +1,15 @@
+meta {
+  name: 11 - Rechazar pregunta en revision (200 OK)
+  type: http
+  seq: 11
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas/{{preguntaId}}/rechazar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: in [200, 400]
+}

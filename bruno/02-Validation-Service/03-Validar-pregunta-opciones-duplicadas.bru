@@ -1,0 +1,33 @@
+meta {
+  name: 03 - Validar pregunta con opciones duplicadas
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{validationUrl}}/api/validaciones
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Cuál es el puerto predeterminado del protocolo AMQP en RabbitMQ?",
+    "opciones": [
+      { "texto": "5672", "correcta": true },
+      { "texto": "5672", "correcta": false },
+      { "texto": "15672", "correcta": false },
+      { "texto": "8080", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.valido: eq false
+  res.body.errores: length 1
+}

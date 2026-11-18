@@ -1,0 +1,16 @@
+meta {
+  name: 13 - Consultar pregunta inexistente (404 Not Found)
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/preguntas/9999
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+  res.body.mensaje: isDefined
+}

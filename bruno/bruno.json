@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "SaberPRO - Banco de Preguntas",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

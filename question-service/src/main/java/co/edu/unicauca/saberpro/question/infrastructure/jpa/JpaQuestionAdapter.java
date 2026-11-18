@@ -21,6 +21,9 @@ public class JpaQuestionAdapter implements PreguntaRepositoryPort {
     @Override
     public Pregunta guardar(Pregunta pregunta) {
         QuestionRecord guardado = repository.save(QuestionDomainMapper.toRecord(pregunta));
+        if (pregunta.getId() == null && guardado.getId() != null) {
+            pregunta.asignarId(guardado.getId());
+        }
         return QuestionDomainMapper.toDomain(guardado);
     }
 

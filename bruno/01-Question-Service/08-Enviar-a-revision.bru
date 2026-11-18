@@ -1,0 +1,17 @@
+meta {
+  name: 08 - Enviar pregunta a revision (202 Accepted - Publica RabbitMQ)
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas/{{preguntaId}}/enviar-revision
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 202
+  res.body.id: eq 1
+  res.body.estado: eq "PENDIENTE_REVISION"
+}

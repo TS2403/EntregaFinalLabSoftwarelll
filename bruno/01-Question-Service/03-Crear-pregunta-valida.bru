@@ -1,0 +1,47 @@
+meta {
+  name: 03 - Crear pregunta valida (201 Created)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Cuál es la principal ventaja del desacoplamiento en Arquitectura Hexagonal?",
+    "justificacion": "Aislar el núcleo de negocio de la infraestructura tecnológica permite que las reglas del dominio evolucionen de forma independiente.",
+    "opciones": [
+      {
+        "texto": "Permite intercambiar adaptadores de persistencia y transporte sin modificar el dominio",
+        "correcta": true
+      },
+      {
+        "texto": "Obliga a utilizar bases de datos relacionales exclusivamente",
+        "correcta": false
+      },
+      {
+        "texto": "Elimina la necesidad de escribir pruebas unitarias de software",
+        "correcta": false
+      },
+      {
+        "texto": "Acopla fuertemente los controladores a las tablas del sistema",
+        "correcta": false
+      }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.id: isDefined
+  res.body.estado: eq "BORRADOR"
+  res.body.opciones: length 4
+}

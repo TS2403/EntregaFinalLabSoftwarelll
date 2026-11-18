@@ -1,0 +1,16 @@
+meta {
+  name: 01 - Consultar eventos de revision consumidos (RabbitMQ)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{lifecycleUrl}}/api/ciclo-vida/revisiones
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body: isDefined
+}

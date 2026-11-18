@@ -1,0 +1,34 @@
+meta {
+  name: 07 - Crear pregunta con 3 opciones (201 BORRADOR)
+  type: http
+  seq: 7
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Cuál comando detiene y remueve los contenedores en Docker Compose?",
+    "justificacion": "El comando down apaga la red y detiene los contenedores definidos en el archivo compose.",
+    "opciones": [
+      { "texto": "docker compose down", "correcta": true },
+      { "texto": "docker stop", "correcta": false },
+      { "texto": "docker pause", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 201
+  res.body.id: isDefined
+  res.body.estado: eq "BORRADOR"
+  res.body.opciones: length 3
+}

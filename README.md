@@ -20,6 +20,7 @@ Ecosistema de microservicios con **DDD tactico**, **Arquitectura Hexagonal (puer
 saberpro-banco-preguntas/
 ├── docker-compose.yml
 ├── build-all.sh / build-all.ps1
+├── bruno/                <- Colección Bruno para pruebas automatizadas e interactivas de API
 ├── docs/postman/SaberPRO-Taller13.postman_collection.json
 ├── validation-service/   (Dockerfile, pom.xml, api/, filtros/)
 ├── question-service/
@@ -33,6 +34,7 @@ saberpro-banco-preguntas/
 │       ├── application/      QuestionApplicationService
 │       ├── infrastructure/
 │       │   ├── jpa/          QuestionRecord, AnswerOptionRecord, QuestionDomainMapper, JpaQuestionAdapter
+│       │   ├── data/         QuestionDataSeeder (poblado de datos de prueba en H2)
 │       │   ├── memory/       InMemoryQuestionAdapter
 │       │   ├── messaging/    RabbitMQConfig, RabbitMQPublisher
 │       │   ├── rest/         RestValidacionAdapter (llamada sincrona a validation-service)
@@ -125,7 +127,8 @@ Ejemplo de cuerpo para crear una pregunta:
 }
 ```
 
-La coleccion completa esta en `docs/postman/` (importar en Postman o Thunder Client).
+La coleccion para Bruno esta disponible en la carpeta `bruno/` (abrir la carpeta directamente en la app de escritorio Bruno o usar `bru run --env Local`).
+Tambien se incluye la coleccion legacy para Postman en `docs/postman/` (importar en Postman o Thunder Client).
 
 ## Monitoreo en RabbitMQ
 

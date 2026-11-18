@@ -1,0 +1,33 @@
+meta {
+  name: 02 - Validar pregunta valida (200 OK)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{validationUrl}}/api/validaciones
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Qué es un Value Object en Domain-Driven Design?",
+    "opciones": [
+      { "texto": "Objeto sin identidad conceptual que se define por sus atributos", "correcta": true },
+      { "texto": "Entidad que posee un identificador único mutable en base de datos", "correcta": false },
+      { "texto": "Clase controladora encargada de orquestar transacciones HTTP", "correcta": false },
+      { "texto": "Contrato de salida implementado por adaptadores de persistencia", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.valido: eq true
+  res.body.errores: length 0
+}

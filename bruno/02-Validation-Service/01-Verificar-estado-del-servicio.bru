@@ -1,0 +1,17 @@
+meta {
+  name: 01 - Verificar estado del servicio (UP)
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{validationUrl}}/api/validaciones/estado
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.estado: eq "UP"
+  res.body.servicio: eq "validation-service"
+}

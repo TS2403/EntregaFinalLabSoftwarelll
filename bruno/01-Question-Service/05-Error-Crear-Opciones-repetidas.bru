@@ -1,0 +1,33 @@
+meta {
+  name: 05 - Error Crear - Opciones repetidas (400 Pipes & Filters)
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Qué patrón arquitectónico desacopla el dominio de la infraestructura?",
+    "justificacion": "Los puertos y adaptadores aíslan el núcleo de negocio de librerías y tecnologías externas.",
+    "opciones": [
+      { "texto": "Hexagonal", "correcta": true },
+      { "texto": "Hexagonal", "correcta": false },
+      { "texto": "Modelo Vista Controlador", "correcta": false },
+      { "texto": "Capas tradicionales", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.mensaje: isDefined
+}

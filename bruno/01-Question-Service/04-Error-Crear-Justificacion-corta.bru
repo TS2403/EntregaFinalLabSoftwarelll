@@ -1,0 +1,33 @@
+meta {
+  name: 04 - Error Crear - Justificacion corta (400 Bad Request)
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "¿Qué es un agregado en Domain-Driven Design (DDD)?",
+    "justificacion": "corta",
+    "opciones": [
+      { "texto": "Opción A", "correcta": true },
+      { "texto": "Opción B", "correcta": false },
+      { "texto": "Opción C", "correcta": false },
+      { "texto": "Opción D", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.mensaje: isDefined
+}

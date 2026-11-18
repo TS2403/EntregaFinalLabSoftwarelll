@@ -1,0 +1,15 @@
+meta {
+  name: 14 - Acceso a Consola Web H2
+  type: http
+  seq: 14
+}
+
+get {
+  url: {{baseUrl}}/h2-console
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: in [200, 302]
+}

@@ -1,0 +1,33 @@
+meta {
+  name: 06 - Error Crear - Lenguaje ofensivo (400 Pipes & Filters)
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "Este enunciado contiene una palabra idiota que debe ser rechazada por el filtro",
+    "justificacion": "La justificación debe tener al menos quince caracteres para ser válida.",
+    "opciones": [
+      { "texto": "Opción A", "correcta": true },
+      { "texto": "Opción B", "correcta": false },
+      { "texto": "Opción C", "correcta": false },
+      { "texto": "Opción D", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 400
+  res.body.mensaje: isDefined
+}

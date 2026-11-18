@@ -1,0 +1,17 @@
+meta {
+  name: 10 - Aprobar pregunta en revision (200 OK)
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas/{{preguntaPendienteId}}/aprobar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.id: eq 3
+  res.body.estado: eq "APROBADA"
+}

@@ -1,0 +1,16 @@
+meta {
+  name: 12 - Error Aprobar - Pregunta en BORRADOR (400 Bad Request)
+  type: http
+  seq: 12
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas/{{preguntaIncompletaId}}/aprobar
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+  res.body.mensaje: isDefined
+}

@@ -1,0 +1,16 @@
+meta {
+  name: 09 - Error Enviar a revision con 3 opciones (400 Bad Request)
+  type: http
+  seq: 9
+}
+
+post {
+  url: {{baseUrl}}/api/preguntas/{{preguntaIncompletaId}}/enviar-revision
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+  res.body.mensaje: isDefined
+}

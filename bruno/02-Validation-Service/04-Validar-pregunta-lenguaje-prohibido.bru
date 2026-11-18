@@ -1,0 +1,30 @@
+meta {
+  name: 04 - Validar pregunta con lenguaje prohibido
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{validationUrl}}/api/validaciones
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "enunciado": "Esta es una pregunta con palabra estúpido prohibida por el filtro",
+    "opciones": [
+      { "texto": "Opción 1", "correcta": true },
+      { "texto": "Opción 2", "correcta": false }
+    ]
+  }
+}
+
+assert {
+  res.status: eq 200
+  res.body.valido: eq false
+}
